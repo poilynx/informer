@@ -1,0 +1,41 @@
+#include "echosvr.h"
+#include "utils.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <stdint.h>
+
+int main() {
+	char buf[100]="hello";
+	request req;
+	osid oi;
+	
+	if (echosvr_init() != ES_E_SUCCEED)
+		return -1;
+	
+	if(echosvr_listen(&req) != ES_E_SUCCEED)
+		return -1;
+
+	if(parse_request(req.data,&oi) != 0) {
+		printf("fail to check VERIFY MARK");
+		return -1;
+	}
+	/* note:
+	 * update ip and access time and rand in session table
+	 * reply sid, rand, 
+	 */
+
+	//memset(buf,0x7a,sizeof(buf));
+	//if(echosvr_reply(&req,buf,sizeof(buf)) != ES_E_SUCCEED)
+	//	return -1;
+	printf("seq = %hd\n",req.seq);
+
+	printf("iswow64 = %hhd\n"
+		"ver:major = %d\n"
+		"ver:minor = %d\n"
+		"ver:build = %d\n"
+		"hostname = %s\n"
+		,oi.iswow64,oi.major,oi.minor,oi.build,oi.hostname);
+	
+
+	return 0;
+}

@@ -1,0 +1,5 @@
+*.o
+*.exe
+loader.bin
+test.c
+
