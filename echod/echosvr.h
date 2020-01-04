@@ -1,41 +1,22 @@
 #include <stdint.h>
-#include <stdio.h>
-#include <netinet/ip.h>
-#include <netinet/udp.h>
-#include <linux/icmp.h>
-#include <net/ethernet.h>
-#include <arpa/inet.h>
-#include <stdlib.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <string.h>
-
-enum{
-	ES_E_SUCCEED 	= 0,
-	ES_E_UNKNOW	= 255
-};
-
-typedef struct request_s {
+typedef struct echo_request_st {
 	unsigned short 	seq;
 	unsigned short 	id;
 	struct in_addr	addr;
 	struct in_addr	daddr;
 	unsigned char*	data;
 	size_t		len;
-} request,prequest;
+} echo_request_t;
 
-extern int echosvr_init(void);
+extern void echosvr_init(void);
 
 extern int echosvr_listen( /*there are no synchronization now*/
-	request* 	preq;
+	echo_request_t* req;
 );
 
-extern int echosvr_reply(
-	request* 	preq,
-	void* 		buf,
-	size_t		size
-);
+extern int echosvr_reply(echo_request_t* req, void* buf, size_t size);
+extern void echo_request_clear(echo_request_t* req);
+
 
 
 	
